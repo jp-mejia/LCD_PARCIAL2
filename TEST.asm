@@ -11,6 +11,9 @@ MAIN_PROG CODE                      ; let linker place main program             
 i EQU 0x22
 j EQU 0x23
 bin EQU 0x24
+aux EQU 0x33
+ban EQU 0x34
+carr EQU 0x35
 i1 EQU 0x25
 i2 EQU 0x26
 i3 EQU 0x27
@@ -19,9 +22,6 @@ i5 EQU 0x29
 i6 EQU 0x30
 i7 EQU 0x31
 i8 EQU 0x32
-aux EQU 0x33
-ban EQU 0x34
-carr EQU 0x35
 g1 EQU 0x36
 g2 EQU 0x37
 g3 EQU 0x38
@@ -63,23 +63,21 @@ START
     CLRF ban
     CLRF carr
     CLRF i1
-    CLRF i2
-    CLRF i3
-    CLRF i4
-    CLRF i5
-    CLRF i6
-    CLRF i7
-    CLRF i8
-    
     CLRF g1
+    CLRF i2
     CLRF g2
+    CLRF i3
     CLRF g3
+    CLRF i4
     CLRF g4
+    CLRF i5
     CLRF g5
+    CLRF i6
     CLRF g6
+    CLRF i7
     CLRF g7
+    CLRF i8
     CLRF g8
-    
     CLRF aux
       
     
@@ -575,6 +573,21 @@ BOTON:
     
     RETURN
 
+    
+HASH:
+    CALL WRONG
+    CLRF ban
+    CLRF carr
+    CLRF i1
+    CLRF i2
+    CLRF i3
+    CLRF i4
+    CLRF i5
+    CLRF i6
+    CLRF i7
+    CLRF i8
+    GOTO BACK 
+    
 one:     
     MOVLW b'00000001'
     MOVWF aux
@@ -715,19 +728,7 @@ zero:
     GOTO $-1
     RETURN
 
-HASH:
-    CALL WRONG
-    CLRF ban
-    CLRF carr
-    CLRF i1
-    CLRF i2
-    CLRF i3
-    CLRF i4
-    CLRF i5
-    CLRF i6
-    CLRF i7
-    CLRF i8
-    GOTO BACK
+
 
 DEL:
     RETURN
@@ -777,61 +778,47 @@ WRONG:
     
     RETURN
     
-reset:
-    CALL clear
-    CALL PASSCODE
-    CALL ATTEMPT
-    CALL HIDE
-    GOTO CONTRA
-    RETURN
+
    
         
 COMP:
     
     MOVFW g1
-    MOVWF aux
     XORWF i1,W
     BTFSS STATUS,Z
     CALL DENIED
     
     MOVFW g2
-    MOVWF aux
     XORWF i2,W
     BTFSS STATUS,Z
     CALL DENIED
     
     MOVFW g3
-    MOVWF aux
     XORWF i3,W
     BTFSS STATUS,Z
     CALL DENIED
     
     MOVFW g4
-    MOVWF aux
     XORWF i4,W
     BTFSS STATUS,Z
     CALL DENIED
     
     MOVFW g5
-    MOVWF aux
     XORWF i5,W
     BTFSS STATUS,Z
     CALL DENIED
     
     MOVFW g6
-    MOVWF aux
     XORWF i6,W
     BTFSS STATUS,Z
     CALL DENIED
     
     MOVFW g7
-    MOVWF aux
     XORWF i7,W
     BTFSS STATUS,Z
     CALL DENIED
     
     MOVFW g8
-    MOVWF aux
     XORWF i8,W
     BTFSS STATUS,Z
     CALL DENIED
@@ -1043,7 +1030,7 @@ DENIED:
 	    CALL exec
 
 	BSF PORTC, 0     
-	BTFSC PORTD, 3
+	BTFSC PORTD, 3 ;Seleccionar Asterisco lo reseteara
 	GOTO reset
 	GOTO DENIED_STAY  
     
@@ -1059,7 +1046,15 @@ LCDPOS:
     CALL time
     
     RETURN
-   
+ 
+reset:
+    CALL clear
+    CALL PASSCODE
+    CALL ATTEMPT
+    CALL HIDE
+    GOTO CONTRA
+    RETURN    
+    
 exec
 
     BSF PORTA,1		;exec
