@@ -398,30 +398,35 @@ ENTRY:
     GOTO $-2
     MOVFW aux
     MOVWF g1
+   
     
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF g2
-   
+    
+    
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF g3
     
+    
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF g4
-   
+    
+    
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF g5
+    
     
     CALL BOTON
     BTFSS ban, 0
@@ -429,18 +434,21 @@ ENTRY:
     MOVFW aux
     MOVWF g6 
     
+    
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF g7
     
+    
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF g8
-   
+    
+    
     RETURN
     
 CONTRA:
@@ -451,48 +459,56 @@ CONTRA:
     GOTO $-2
     MOVFW aux
     MOVWF i1
-   
+    CALL dynamo
+    
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF i2
+    CALL dynamo
     
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF i3
+    CALL dynamo
     
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF i4
+    CALL dynamo
     
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF i5
+    CALL dynamo
    
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF i6
+    CALL dynamo
    
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF i7
+    CALL dynamo
     
     CALL BOTON
     BTFSS ban, 0
     GOTO $-2
     MOVFW aux
     MOVWF i8
+    CALL dynamo
     
     RETURN
     
@@ -573,6 +589,22 @@ BOTON:
     
     RETURN
 
+dynamo:
+    BCF PORTA,0
+    CALL time
+    
+    MOVLW 0x10
+    MOVWF PORTB
+    CALL exec
+    
+    BSF PORTA, 0
+    CALL time
+    
+    MOVLW '*'
+    MOVWF PORTB
+    CALL exec
+    
+    RETURN
     
 HASH:
     CALL WRONG
